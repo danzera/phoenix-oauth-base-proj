@@ -1,0 +1,16 @@
+<h5>Edit Existing Topic</h5>
+
+<!-- entire @topic struct gets passed to the topic_path function -->
+<!-- Phoenix will pull out the id property automatically when pairing it to the appropriate route -->
+<!-- @changeset is tightly coupled to the form, see note above text_input below -->
+<%= form_for @changeset, topic_path(@conn, :update, @topic), fn f -> %>
+
+	<div class="form-group">
+		<!-- text_input sees from form "f" that @changeset already has a title property defined and populates the input field with the title property -->
+		<!-- placeholder still included in case the user deletes all input -->
+		<%= text_input f, :title, placeholder: "Topic Title", class: "form-control" %>
+		<%= error_tag f, :title %>
+	</div>
+
+	<%= submit "Save Topic", class: "btn btn-primary" %>
+<% end %>

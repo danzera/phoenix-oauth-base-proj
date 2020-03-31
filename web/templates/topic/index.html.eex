@@ -1,0 +1,32 @@
+<h5>All Topics</h5>
+
+<ul class="collection">
+	<%= for topic <- @topics do %>
+		<li class="collection-item">
+			<!-- must wrap all Elixir code in appropriate tags so it is evaluated as such -->
+			<%= topic.title %>
+			<div class="right">
+				<!-- link tags used in lieu of actual <a> tags, Elixir/Phoenix generate the appropriate HTML -->
+				<!-- can pass the entire "topic" object from the for-loop into the topic_path -->
+				<!-- topic_path function knows to pull the id property from the topic struct in order to locate the appropriate route, /topics/:id/edit in this case -->
+				<%= link "Edit", to: topic_path(@conn, :edit, topic) %>
+				<%# by default, <link> tags always make GET requests %>
+				<%# need to specify the alternate request type via the "method" option using the request type as an atom %>
+				<%# if you look at the underlying HTML that Phoenix generates, it wraps the link in a <form> %>
+				<%= link "Delete", to: topic_path(@conn, :delete, topic), method: :delete %>
+			</div>
+		</li>
+	<% end %>
+</ul>
+
+<div class="fixed-action-btn">
+	<!-- use path helper topic_path, insulates against potential changes to the "topics/new" url -->
+	<!-- topic_path will still be able to locate the appropiate path -->
+	<!-- link gets a keyword list - class needs to be passed as an argument - can't have HTML/CSS mixed into the Elixir code block -->
+	<!-- this will generate an <a> tag with the specified path and classes -->
+	<!-- close the Elixir block with a "do" - allows us to add any HTML inside of that tag that gets generated -->
+	<%= link to: topic_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
+		<i class="material-icons">add</i>
+	<% end %>
+</div>
+        

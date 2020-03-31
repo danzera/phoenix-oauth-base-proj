@@ -1,0 +1,21 @@
+<h5>Create New Topic</h5>
+<!-- Phoenix has built in helpers to spare us from writing raw HTML forms -->
+<!-- opening tag with "%=" is an indication that we will be writing Elixir code directly in our HTML -->
+<!-- Below is essentially the same as: form_for(@changeset, topic_path(@conn, :create), fn f -> end) -->
+<!-- English translation: create a form with this changeset -->
+<!-- 	send the form contents to the :create route on the "topic" path when the form is submitted -->
+<!-- 	will eventually end up as an HTML <form> tag -->
+<!-- 	the properties provided determine where the form will be submitted and set the associated html properties -->
+<!--  the "@" symbols denote variables that are expected to be passed in whenver this template is rendered -->
+<%= form_for @changeset, topic_path(@conn, :create), fn f -> %>
+	<!-- use more embedded Elixir code to generate our input field and submit button -->
+	<div class="form-group">
+		<!-- f represents the form -->
+		<!-- Elixir will set helper properties on the <input> tag that gets generated -->
+		<%= text_input f, :title, placeholder: "Topic Title", class: "form-control" %>
+		<%= error_tag f, :title %>
+	</div>
+
+	<!-- submit button will say "Save Topic" and have the specified class property -->
+	<%= submit "Save Topic", class: "btn btn-primary" %>
+<% end %>
