@@ -1,7 +1,7 @@
 defmodule Discuss.User do
 	use Discuss.Web, :model # tell Phoenix this module is a "model"
 
-	schema "users" do # tell Phoenix what the model looks like in our database
+	schema "users" do # tell Phoenix what the model looks like in our database, i.e. structure of the "users" table
 		field :email, :string
 		field :provider, :string
 		field :token, :string

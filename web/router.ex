@@ -14,13 +14,12 @@ defmodule Discuss.Router do
     plug :accepts, ["json"]
   end
 
+	# namespace URLs in your app with "scope"
   scope "/", Discuss do
     pipe_through :browser # Use the default browser stack
 
 		# ROUTES
-		 # breaking RESTful convention here to show all topics at the base route
-		 # would generally use the route: get "/topics", TopicController, :index
-		# get "/", TopicController, :index
+		# get "/", TopicController, :index # breaking RESTful convention here to show all topics at the base route, would generally use the route: get "/topics", TopicController, :index
 		# get "/topics/new", TopicController, :new
 		# post "/topics", TopicController, :create
 		# get "/topics/:id/edit", TopicController, :edit # use router wildcard to catch the topic ID, params object will have id property on it as a result
@@ -32,13 +31,12 @@ defmodule Discuss.Router do
 		# the resources helper also assumes that the ID property is called "id"
 	end
 
-	# namespace URLs in your app with "scope"
 	scope "/auth", Discuss do
 		# this sends all requests through "pipeline :browser" above
 		# BEFORE any request to any route INSIDE THIS SCOPE is sent to the controller, some amount of preproccessing on the request will be done
 		pipe_through :browser # Use the default browser stack
 
-		get "/logout", AuthController, :logout # get request breaks here from restful conventions, could be a DELETE request, but this prevents us from having to create a form in the template
+		get "/logout", AuthController, :logout # this get request breaks from restful conventions, could be a DELETE request, but this prevents us from having to create a form in the template
 		get "/:provider", AuthController, :request
 		get "/:provider/callback", AuthController, :callback
 	end

@@ -20,7 +20,7 @@
 		<!-- Material Design expects nav/header to be placed outside of any container (the opposite of what Bootstrap expects) -->
 		<nav class="light-blue">
 			<div class="nav-wrapper container">
-				<a href="/" class="brand-logo">Discussions</a>
+				<a href="/" class="brand-logo">Some Heading - Link to base route</a>
 				<ul class="right">
 					<%# case/cond statements in templates look messy, so unless necessary, if statements are typically easier and more readable %>
 					<%= if @conn.assigns[:user] do %> <%# user is logged in %>

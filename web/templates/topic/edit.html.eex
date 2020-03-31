@@ -1,8 +1,8 @@
 <h5>Edit Existing Topic</h5>
 
-<!-- entire @topic struct gets passed to the topic_path function -->
+<!-- entire @resource struct gets passed to the resource_path function -->
 <!-- Phoenix will pull out the id property automatically when pairing it to the appropriate route -->
-<!-- @changeset is tightly coupled to the form, see note above text_input below -->
+<!-- @changeset is tightly coupled to the form, see notes regarding text_input below -->
 <%= form_for @changeset, topic_path(@conn, :update, @topic), fn f -> %>
 
 	<div class="form-group">

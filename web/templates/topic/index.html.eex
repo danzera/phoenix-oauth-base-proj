@@ -7,8 +7,8 @@
 			<%= topic.title %>
 			<div class="right">
 				<!-- link tags used in lieu of actual <a> tags, Elixir/Phoenix generate the appropriate HTML -->
-				<!-- can pass the entire "topic" object from the for-loop into the topic_path -->
-				<!-- topic_path function knows to pull the id property from the topic struct in order to locate the appropriate route, /topics/:id/edit in this case -->
+				<!-- can pass the entire "resource" object from the for-loop into the resource_path -->
+				<!-- resource_path function knows to pull the id property from the resource struct in order to locate the appropriate route, /resources/:id/edit in this case -->
 				<%= link "Edit", to: topic_path(@conn, :edit, topic) %>
 				<%# by default, <link> tags always make GET requests %>
 				<%# need to specify the alternate request type via the "method" option using the request type as an atom %>
@@ -20,8 +20,8 @@
 </ul>
 
 <div class="fixed-action-btn">
-	<!-- use path helper topic_path, insulates against potential changes to the "topics/new" url -->
-	<!-- topic_path will still be able to locate the appropiate path -->
+	<!-- use path helper resource_path, insulates against potential changes to the "resources/new" url -->
+	<!-- resource_path will still be able to locate the appropiate path -->
 	<!-- link gets a keyword list - class needs to be passed as an argument - can't have HTML/CSS mixed into the Elixir code block -->
 	<!-- this will generate an <a> tag with the specified path and classes -->
 	<!-- close the Elixir block with a "do" - allows us to add any HTML inside of that tag that gets generated -->

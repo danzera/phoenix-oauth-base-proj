@@ -10,20 +10,18 @@ defmodule Discuss.Plugs.SetUser do
 	# 2. call: called every time that the plug runs, must receive and return a conn
 
 	def init(_params) do
-		# this plugs purpose is strictly to look at the conn object and work with user information
-		# ==> there's no initial setup we really need to do
+		# this plug's purpose is strictly to look at the conn object and work with user information
+		# ==> there's no initial setup we really need to do in this case
 		# example init function use case: pulling data from database and then doing expensive computation
 		# ==> would only be run once and then automatically injected as second arg to call function on subsequent requests
 	end
 
 	# fetch user info from database, if any	
-	# transform conn object to set user model on the object so other controllers/functions have access to the user's information
+	# set user model on conn object so other controllers/functions have access to the user's information
 	# _params is NOT the same _params as the second argument in our controllers (form data, router info, etc.)
-	# in a module plug, _params is the return value from the init(_params) function
+	# in a module plug, _params is the return value from the init(_params) function above
 	def call(conn, _params) do
-		# pull user id from session via a very functional programming approach
-		# define a function to do the work for us, pass the conn and the data we want to a function and get some response back
-		# NOT referencing conn.session.user_id (non-functional programming approach)
+		# pull user id from session
 		user_id = get_session(conn, :user_id)
 		# cond statement - list of expressions (conditions) where the FIRST that evaluates to true is executed
 		cond do
@@ -33,7 +31,7 @@ defmodule Discuss.Plugs.SetUser do
 			user = user_id && Repo.get(User, user_id) ->
 				# "assign" (singular) function adds key :user with the specified data "user" to the "assigns" (plurarl) property of the conn object
 				assign(conn, :user, user) # conn.assigns.user => user struct, so any plug that executes AFTER this set_user plug will have access to the user data within the conn object
-			# no user_id
+			# no user_id, add "true" case as a catch-all
 			true ->
 				assign(conn, :user, nil) # assign user property to nil
 		end

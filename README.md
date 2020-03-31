@@ -1,4 +1,4 @@
-# Discuss
+# Phoenix & OAuth with Github
 
 To start your Phoenix app:
 

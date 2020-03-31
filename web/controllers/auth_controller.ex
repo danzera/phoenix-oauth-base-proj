@@ -11,14 +11,12 @@ defmodule Discuss.AuthController do
 			token: auth.credentials.token
 		}
 
-		# make a changeset and pass it to our private function so we can insert/update a database record and store applicable user information in a session
-		# this logic isn't directly tied to the callback, so we put it in separate functions
+		# changeset passed to private function to insert/update database with user info
 		changeset = User.changeset(%User{}, user_params) # %User{} == %Discuss.User{} struct/model thanks to the alias statement above
 		login(conn, changeset)
 	end
 
-	# stash user information on a session
-	# if there is a user_id on the session, we will assume the user is logged in
+	# add user info to session, will assume the user is logged in if there is a user_id on the session
 	defp login(conn, changeset) do
 		case insert_or_update_user(changeset) do
 			{:ok, user} -> # user logged in successfully
@@ -29,13 +27,12 @@ defmodule Discuss.AuthController do
 			{:error, _reason} -> # handle unpredictable situation if login fails for some reason
 				conn
 				|> put_flash(:error, "Error logging in") # conn is automatically piped in as the first argument
-				|> redirect(to: topic_path(conn, :index)) # send user to list of all topics if there is an error signing in
+				|> redirect(to: topic_path(conn, :index)) # send user to index route if there is an error signing in
 		end
 	end
 
-	# "defp" specifies a private function as opposed "def" which specifies public functions
-	# denoting this function as private will restrict it from being called by any other modules
-	# we do this b/c it is a stand-alone helper function, only useful to our auth controller
+	# this is a stand-alone helper function, only useful to our auth controller
+	# defined as a private function (defp) to restrict it from being called by other modules
 	defp insert_or_update_user(changeset) do
 		# verify if user already exists in our database
 		case Repo.get_by(User, email: changeset.changes.email) do
@@ -43,20 +40,19 @@ defmodule Discuss.AuthController do
 			nil ->
 				Repo.insert(changeset) # add record to the database
 			user -> # user is found
-				# Repo.insert returns a tuple of the form {:ok, user} on a successful insert, or {:error, }
-				# returning a tuple of the same type if the user already exists in the database (without needing to insert a record)
-				# this guarantees that this insert_or_update_user function will have the same return type regardless of which case is hit
+				# Repo.insert returns a tuple of the form {:ok, user} on a successful insert
+				# so we return a tuple of the same type if the user is found in the database via Repo.get_by
+				# this guarantees the insert_or_update_user function has the same return type regardless of which case is hit
 				{:ok, user}
 		end
 	end
 
 	def logout(conn, _params) do
-		# could use put_session(:user_id, nil)...
-		# better to use configure_session(drop: true)
+		# could use put_session(:user_id, nil), but better to use configure_session(drop: true)
 		# this future-proofs our app in case additional info is added to the session at some point
 		# this is better from a security standpoint
 		conn
 		|> configure_session(drop: true)
-		|> redirect(to: topic_path(conn, :index)) # send user to list of all topics if there is an error signing in
+		|> redirect(to: topic_path(conn, :index)) # send user to index route if there is an error signing in
 	end
 end
